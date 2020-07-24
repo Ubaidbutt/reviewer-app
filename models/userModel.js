@@ -21,6 +21,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  admin: {
+    type: Boolean,
+    default: true
+  },
   country: {
     type: String
   }

@@ -5,14 +5,13 @@ const jwt = require('jsonwebtoken')
 const userConfig = require('../configurations/userConfig')
 
 module.exports = {
-  getToken: async (userInfo) => {
-    console.log('User info: ', userInfo)
-    return new Promise(async (resolve, reject) => {
+  getToken: (userInfo) => {
+    return new Promise((resolve, reject) => {
       try {
-        const token = await jwt.sign({ user: userInfo }, userConfig.secretKeyForJwtToken, {
+        const token = jwt.sign(userInfo, userConfig.secretKeyForJwtToken, {
           expiresIn: 3600 // expires in 1 hour
         })
-        const refreshToken = await jwt.sign({ user: userInfo }, userConfig.secretKeyForJwtToken, {
+        const refreshToken = jwt.sign(userInfo, userConfig.secretKeyForJwtToken, {
           expiresIn: 7200 // expires in 24 hours
         })
         resolve({
@@ -36,6 +35,17 @@ module.exports = {
         req.user = user
         next()
       }
+    })
+  },
+  verifyRefreshToken: (token) => {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, userConfig.secretKeyForJwtToken, (err, user) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(user)
+        }
+      })
     })
   }
 }
