@@ -14,16 +14,16 @@ module.exports = {
       req.body.password = brcypt.hashSync(req.body.password, 10)
       req.body.admin = false
       const newUser = await User.create(req.body)
-      res.json({ success: true, message: { username: newUser.username } })
+      res.json({ success: true, message: { username: newUser.username, email: newUser.email } })
     } catch (err) {
       console.log(err)
-      res.statusCode(500).json({ success: false, message: err })
+      res.status(500).json({ success: false, message: err })
     }
   },
   // Login the user and assign a Bearer token to the user
   login: async (req, res) => {
     try {
-      const user = await User.findOne({ username: req.body.username })
+      const user = await User.findOne({ username: req.body.username }, '+password')
       if (!user) {
         res.status(404).json({ success: false, message: 'User not found.' })
       } else {
@@ -32,6 +32,7 @@ module.exports = {
           const token = await userAuth.getToken({ username: user.username, id: user._id })
           client.set(user.username, token.refreshToken, (err) => {
             if (err) {
+              console.log('Error redis: ', err)
               return res.status(500).json({ success: false, message: err })
             }
             res.json({ suucess: true, message: token })
@@ -41,6 +42,7 @@ module.exports = {
         }
       }
     } catch (err) {
+      console.log('Error: ', err)
       res.status(500).json({ success: false, message: err })
     }
   },
@@ -70,9 +72,6 @@ module.exports = {
   getAllUsers: async (req, res) => {
     try {
       const users = await User.find({}).lean()
-      for (const i in users) {
-        delete users[i].password
-      }
       res.json(users)
     } catch (err) {
       res.status(500).json({ success: false, message: err })
@@ -95,7 +94,6 @@ module.exports = {
   findAUser: async (req, res) => {
     try {
       const user = await User.findById(req.params.userId)
-      delete user.password
       res.json({ success: true, message: user })
     } catch (err) {
       res.status(500).json({ success: false, message: err })
@@ -106,7 +104,7 @@ module.exports = {
       if (req.body.admin) {
         req.body.admin = false
       }
-      const updatedUser = await User.findOneAndUpdate({ _id: req.params.userId }, req.body, { useFindAndModify: false })
+      const updatedUser = await User.updateOne({ _id: req.params.userId }, req.body, { useFindAndModify: false })
       res.json({ success: true, message: updatedUser })
     } catch (err) {
       res.status(500).json({ success: false, message: err })
