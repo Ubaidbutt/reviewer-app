@@ -12,10 +12,16 @@ const movieSchema = new Schema({
   director: {
     type: String
   },
-  lead: {
-    type: String,
+  viewerRating: {
+    type: Number,
     required: true
   },
+  cast: [
+    {
+      type: String,
+      required: true
+    }
+  ],
   review: {
     type: String,
     required: true
