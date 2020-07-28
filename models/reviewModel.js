@@ -3,33 +3,46 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const movieSchema = new Schema({
-  name: {
+const reviewSchema = new Schema({
+  title: {
     type: String,
     required: true,
     unique: true
   },
-  director: {
-    type: String
+  entity: {
+    type: String,
+    enum: ['movie', 'book'],
+    required: true
   },
-  viewerRating: {
+  rating: {
     type: Number,
     required: true
   },
-  cast: [
+  roles: [
     {
       type: String,
       required: true
     }
   ],
-  review: {
+  comments: {
     type: String,
     required: true
+  },
+  director: {
+    type: String
+  },
+  writer: {
+    type: String
   },
   private: {
     type: Boolean,
     default: false
   },
+  genre: [
+    {
+      type: String
+    }
+  ],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
@@ -38,6 +51,6 @@ const movieSchema = new Schema({
   timestamps: true
 })
 
-const Movies = mongoose.model('movie', movieSchema)
+const Review = mongoose.model('review', reviewSchema)
 
-module.exports = Movies
+module.exports = Review

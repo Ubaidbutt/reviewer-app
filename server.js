@@ -15,7 +15,7 @@ const serverConfig = require('./configurations/serverConfig')
 
 // Router files
 const userRouter = require('./routers/userRouter')
-const movieRouter = require('./routers/movieRouter')
+const reviewRouter = require('./routers/reviewRouter')
 
 const app = express()
 
@@ -24,7 +24,7 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 app.use('/users', userRouter)
-app.use('/movies', movieRouter)
+app.use('/reviews', reviewRouter)
 
 app.listen(serverConfig.serverPort, () => {
   console.log(`The server is up and running at PORT ${serverConfig.serverPort}`)
