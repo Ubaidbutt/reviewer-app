@@ -1,5 +1,3 @@
-'use strict'
-
 const jwt = require('jsonwebtoken')
 
 const userConfig = require('../configurations/userConfig')

@@ -1,17 +1,14 @@
-'use strict'
-
 // require the basic express modules
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const dotenv = require('dotenv')
+dotenv.config() // Read and load the Environment variables from the file
 
 // require mongoose connection object and setup basic emitterss
 const mongooseConnection = require('./dbconnections/mongoConnection')
-mongooseConnection.on('connected', () => console.log('MongoDB connected. '))
+mongooseConnection.on('connected', () => console.log('MongoDB connected at PORT 27017'))
 mongooseConnection.on('error', (err) => console.log('MongoDB connection error: ', err))
-
-// Configuration files
-const serverConfig = require('./configurations/serverConfig')
 
 // Router files
 const userRouter = require('./routers/userRouter')
@@ -26,6 +23,6 @@ app.use(morgan('dev'))
 app.use('/users', userRouter)
 app.use('/reviews', reviewRouter)
 
-app.listen(serverConfig.serverPort, () => {
-  console.log(`The server is up and running at PORT ${serverConfig.serverPort}`)
+app.listen(process.env.PORT, () => {
+  console.log(`The server is up and running at PORT ${process.env.PORT}`)
 })

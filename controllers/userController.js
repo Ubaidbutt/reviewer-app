@@ -1,5 +1,3 @@
-'use strict'
-
 const brcypt = require('bcryptjs')
 
 const User = require('../models/userModel')

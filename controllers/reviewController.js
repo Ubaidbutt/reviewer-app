@@ -1,19 +1,17 @@
-'use strict'
-
 const Review = require('../models/reviewModel')
 
 module.exports = {
-  // Get all the movies from the DB that are not private
+  // Get all the reviews from the DB that are not private
   getAllReviews: async (req, res) => {
     try {
-      const reviews = await Review.find({ private: false }).populate('user')
+      const reviews = await Review.find({ user: req.user.id }).populate('user')
       res.json({ success: true, message: reviews })
     } catch (err) {
       console.log('Error: ', err)
       res.status(500).json({ success: false, message: err })
     }
   },
-  // Post a review and the review
+  // Post a review
   postReview: async (req, res) => {
     try {
       req.body.user = req.user.id
@@ -23,7 +21,7 @@ module.exports = {
       res.status(500).json({ success: false, message: err })
     }
   },
-  // Delete all the movies from Movie collection only if you have an admin role
+  // Delete all the reviews from Review collection only if you have an admin role
   deleteAllReviews: async (req, res) => {
     try {
       if (req.user.admin) {
@@ -36,7 +34,7 @@ module.exports = {
       res.status(500).json({ success: false, message: err })
     }
   },
-  // Find a specific user based on ID
+  // Find a specific review
   findAReview: async (req, res) => {
     try {
       const review = await Review.findById(req.params.reviewId)
@@ -45,6 +43,7 @@ module.exports = {
       res.status(500).json({ success: false, message: err })
     }
   },
+  // update a review
   updateReview: async (req, res) => {
     try {
       const updatedReview = await Review.updateOne({ _id: req.params.reviewId }, req.body, { useFindAndModify: false })
@@ -53,6 +52,7 @@ module.exports = {
       res.status(500).json({ success: false, message: err })
     }
   },
+  // delete a review
   deleteReview: async (req, res) => {
     try {
       if (req.user.admin) {
