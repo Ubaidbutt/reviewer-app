@@ -1,7 +1,7 @@
 // require the basic express modules
 const express = require('express')
 const bodyParser = require('body-parser')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const dotenv = require('dotenv')
 dotenv.config() // Read and load the Environment variables from the file
 
@@ -18,7 +18,7 @@ const app = express()
 
 // Parse application/json and console the logging
 app.use(bodyParser.json())
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
 
 app.use('/users', userRouter)
 app.use('/reviews', reviewRouter)
