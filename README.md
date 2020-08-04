@@ -16,12 +16,11 @@
 
 ## Steps
 * npm install
-* npm start
+* npm start (Change the mongodb and redis connection strings to "localhost")
 
 <<<<<<< HEAD
 ## To run this app in docker container
 * docker-compose up
-=======
+
 ## MESSAGE
 ###### I love improving myself. If you have time please go through the code and suggest me improvements in terms of my coding style, logic or anything that you feel can help me.
->>>>>>> b8a686af679a4e7cd303869e1bf92d7c05779e3e
