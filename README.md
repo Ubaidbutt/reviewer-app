@@ -17,3 +17,6 @@
 ## Steps
 * npm install
 * npm start
+
+## To run this app in docker container
+* docker-compose up
