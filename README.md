@@ -18,7 +18,6 @@
 * npm install
 * npm start (Change the mongodb and redis connection strings to "localhost")
 
-<<<<<<< HEAD
 ## To run this app in docker container
 * docker-compose up
 
